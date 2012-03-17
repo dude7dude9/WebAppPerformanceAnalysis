@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "_EyegazeLayout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <div id="EyegazeBody">
+        <h2>Welcome To 751 Eye-Gaze Analysis Testings</h2>
+        @RenderBody()
+    </div>
+    <div id="EyegazeMenu">
+        <ul id="menu">
+            <li>@Html.ActionLink("Grass", "TechSearchArticle", "Eyegaze")</li>
+            <li>@Html.ActionLink("art2", "StandardSearchArticle", "Eyegaze")</li>
+            <li>@Html.ActionLink("art3", "TechReadArticle", "Eyegaze")</li>
+            <li>@Html.ActionLink("art4", "StandardReadArticle", "Eyegaze")</li>
+        </ul>
+    </div>
+
