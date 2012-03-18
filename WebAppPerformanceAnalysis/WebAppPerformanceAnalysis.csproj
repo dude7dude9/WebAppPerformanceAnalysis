@@ -68,6 +68,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\chainOfForcedSplitting.png" />
     <Content Include="Content\Eyegaze.css" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
