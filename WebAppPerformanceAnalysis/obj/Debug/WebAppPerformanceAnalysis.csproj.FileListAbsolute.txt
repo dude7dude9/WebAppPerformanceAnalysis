@@ -1,5 +1,0 @@
-C:\Users\Jason Greenwood\Work\Uni\2012\WebAppPerformanceAnalysis\WebAppPerformanceAnalysis\bin\WebAppPerformanceAnalysis.dll
-C:\Users\Jason Greenwood\Work\Uni\2012\WebAppPerformanceAnalysis\WebAppPerformanceAnalysis\bin\WebAppPerformanceAnalysis.pdb
-C:\Users\Jason Greenwood\Work\Uni\2012\WebAppPerformanceAnalysis\WebAppPerformanceAnalysis\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\Jason Greenwood\Work\Uni\2012\WebAppPerformanceAnalysis\WebAppPerformanceAnalysis\obj\Debug\WebAppPerformanceAnalysis.dll
-C:\Users\Jason Greenwood\Work\Uni\2012\WebAppPerformanceAnalysis\WebAppPerformanceAnalysis\obj\Debug\WebAppPerformanceAnalysis.pdb
