@@ -22,12 +22,12 @@ namespace WebAppPerformanceAnalysis.Controllers
             return View();
         }
 
-        public ActionResult UnicornsCompleted()
+        public ActionResult MediaCompleted()
         {
             return View("AsyncMediaView");
         }
 
-        public void UnicornsAsync()
+        public void MediaAsync()
         {
             System.Reflection.Assembly a = System.Reflection.Assembly.GetExecutingAssembly();
             DirectoryInfo d = Directory.GetParent(Directory.GetParent(a.CodeBase.ToString().Substring(8)).ToString());
@@ -59,15 +59,14 @@ namespace WebAppPerformanceAnalysis.Controllers
                 }
             }
             
-            UnicornsCompleted();
+            MediaCompleted();
         }
 
         
     }
 
     public delegate void LoadImageCompletedEventHandler(object sender, LoadImageCompletedEventArgs e);
-
-        
+    
     public class MediaLoader : Component
     {
         public event LoadImageCompletedEventHandler LoadImageCompleted;
@@ -119,6 +118,7 @@ namespace WebAppPerformanceAnalysis.Controllers
         }
 
     }
+    
 
     public class LoadImageCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
     {

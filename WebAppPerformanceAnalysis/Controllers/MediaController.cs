@@ -18,9 +18,9 @@ namespace WebAppPerformanceAnalysis.Controllers
             return View();
         }
 
-        public ActionResult LoadUnicorns()
+        public ActionResult LoadMedia()
         {
-            return View("Unicorns");
+            return View("Media");
         }
 
 

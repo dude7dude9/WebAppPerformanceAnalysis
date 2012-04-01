@@ -161,7 +161,7 @@
     <Content Include="Views\Media\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\Unicorns.cshtml" />
+    <Content Include="Views\Shared\Media.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\AsyncMedia\AsyncMediaView.cshtml" />
