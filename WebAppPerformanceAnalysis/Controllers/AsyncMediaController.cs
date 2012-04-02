@@ -24,7 +24,8 @@ namespace WebAppPerformanceAnalysis.Controllers
 
         public ActionResult MediaCompleted()
         {
-            return View("AsyncMediaView");
+            ViewBag.Title = "Async Media Tests";
+            return View("Blank");
         }
 
         public void MediaAsync()
@@ -50,7 +51,8 @@ namespace WebAppPerformanceAnalysis.Controllers
                     MediaLoader l = new MediaLoader();
                     l.LoadImageCompleted += (sender, e) =>
                     {
-                        Response.Write("<img alt=\"\" src=\"data:image/jpeg;base64," + @e.ImageContents + "\" />");
+                        //Response.Write("<img alt=\"\" src=\"data:image/jpeg;base64," + @e.ImageContents + "\" />");
+                        Response.Write("<img src=\"../.." + fileName.Substring(fileName.LastIndexOf("/")) + "\" alt=\"\" />");
                         Response.Flush();
                         AsyncManager.OutstandingOperations.Decrement();
                     };
@@ -86,13 +88,13 @@ namespace WebAppPerformanceAnalysis.Controllers
         public string LoadImageAsync(string file)
         {
             // Render image...
-            FileStream fileStream = new FileStream(file, FileMode.Open, FileAccess.Read);
-            byte[] buffer = new byte[fileStream.Length];
-            fileStream.Read(buffer, 0, (int)fileStream.Length);
-            fileStream.Close();
-            string base64string = Convert.ToBase64String(buffer);
-            LoadCompleted(new LoadImageCompletedEventArgs(base64string, null, false, null));
-            return base64string;
+            //FileStream fileStream = new FileStream(file, FileMode.Open, FileAccess.Read);
+            //byte[] buffer = new byte[fileStream.Length];
+            //fileStream.Read(buffer, 0, (int)fileStream.Length);
+            //fileStream.Close();
+            //string base64string = Convert.ToBase64String(buffer);
+            LoadCompleted(new LoadImageCompletedEventArgs(null, null, false, null));
+            return null; // base64string;
         }
 
         private void LoadCompleted(object operationState)

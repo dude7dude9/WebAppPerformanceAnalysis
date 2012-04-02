@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "Database Operation Tests";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Database Operation Tests</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.ActionLink("Click here to query database with no multithreading", "QueryDatabase", "Database");
+                                                                                                   <br />
+    
+    @Html.ActionLink("Click here to query database using asynchronous calls", "Database", "Database");
+    
+}
