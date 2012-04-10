@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using System.IO;
+using System.Collections;
 
 using System.Data.Sql;
 using System.Data.SqlClient;
@@ -15,7 +16,6 @@ namespace WebAppPerformanceAnalysis.Controllers
 {
     public class DatabaseController : AsyncController
     {
-        private static SqlConnection conn;
 
         //
         // GET: /Database/
@@ -27,67 +27,68 @@ namespace WebAppPerformanceAnalysis.Controllers
 
         public ActionResult QueryDatabase()
         {
-            return View("RegularQueries");
+            DatabaseWorker dw = new DatabaseWorker();
+            DatabaseWorker.connectDB();
+            ViewBag.Images = new ArrayList();
+            for (int j = 0; j < 5; j++)
+            {
+                int count = dw.intQueryDB("select count(*) from Images");
+
+                for (int i = 1; i <= count; i++)
+                {
+                    byte[] contents = dw.binaryQueryDB("select image from Images where imageID = " + i);
+
+                    // Place image contents in an array of images in viewbag
+                    ViewBag.Images.Add("data:image/jpeg;base64," + Convert.ToBase64String(contents));
+                    
+                }
+            }
+            DatabaseWorker.disconnectDB();
+            ViewBag.Title = "Synchronous Tests Loading Media From Database";
+            return View("Blank");
         }
 
         public ActionResult DatabaseCompleted()
         {
-            ViewBag.Title = "Async Database Tests";
+            ViewBag.Title = "Asynchronous Tests Loading Media From Database";
             return View("Blank");
         }
 
         public void DatabaseAsync()
         {
             AsyncManager.Timeout = 10000;
-
+            
+            ViewBag.Images = new ArrayList();
+            DatabaseWorker.connectDB();
+            DatabaseWorker dw = new DatabaseWorker();
             for (int j = 0; j < 5; j++)
             {
+                int count = dw.intQueryDB("select count(*) from Images");
                 
-                //AsyncManager.OutstandingOperations.Increment();
-                ////var task = Task.Factory.StartNew(() => loadImage((string)fileName));
-                ////Task t = new Task(() => loadImage((string)fileName));
-                ////t.Start();
-                //MediaLoader l = new MediaLoader();
-                //l.LoadImageCompleted += (sender, e) =>
-                //{
-                //    Response.Write("<img alt=\"\" src=\"data:image/jpeg;base64," + @e.ImageContents + "\" />");
-                //    Response.Flush();
-                //    AsyncManager.OutstandingOperations.Decrement();
-                //};
-
-                
-            }
-
-            DatabaseCompleted();
-        }
-
-        public static void connectDB()
-        {
-            conn = new SqlConnection();
-            conn.ConnectionString =
-             "Persist Security Info=False;Integrated Security=false;Connect Timeout=30";
-            conn.Open();
-        }
-
-        private int queryDB(string query)
-        {
-            SqlCommand cmd = conn.CreateCommand();
-            cmd.Connection = conn;
-            try
-            {
-                cmd.CommandText = query;
-                object result = cmd.ExecuteScalar();
-                if (result != null)
+                for (int i = 1; i <= count; i++)
                 {
-                    int id = Int32.Parse(result.ToString());
-                    return id;
+                    AsyncManager.OutstandingOperations.Increment();
+                    AsyncWorker l = new AsyncWorker();
+                    l.LoadImageCompleted += (sender, e) =>
+                    {
+                        // Place image contents in an array of images in viewbag
+                        ViewBag.Images.Add("data:image/jpeg;base64," + @e.ImageContents);
+
+                        //Response.Write("<img alt=\"\" src=\"data:image/jpeg;base64," + @e.ImageContents + "\" />");
+                        //Response.Write("<img src=\"../.." + fileName.Substring(fileName.LastIndexOf("/")) + "\" alt=\"\" />");
+                        //Response.Flush();
+                        AsyncManager.OutstandingOperations.Decrement();
+                    };
+
+                    l.LoadDBImageAsync("select image from Images where imageID = " + i);
+                                        
                 }
-                return 0;
             }
-            catch (SqlException ex)
-            {
-                return 0;
-            }
+            DatabaseWorker.disconnectDB();
         }
+
+        
+
+        
     }
 }

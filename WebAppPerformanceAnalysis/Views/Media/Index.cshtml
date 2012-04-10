@@ -4,10 +4,10 @@
 
 @using (Html.BeginForm())
 {
-    @Html.ActionLink("Click here to load pictures with no multithreading", "LoadMedia", "Media");
+    @Html.ActionLink("Click here to load pictures with no multithreading", "LoadMediaSynchronous", "Media");
                                                                                                    <br />
     
-    @Html.ActionLink("Click here to load pictures using asynchronous calls", "Media", "AsyncMedia");
+    @Html.ActionLink("Click here to load pictures using asynchronous calls", "Media", "Media");
     
 }
 
