@@ -1,0 +1,5 @@
+C:\Users\BB\WebAppPerformanceAnalysis\WebAppPerformanceAnalysis\bin\WebAppPerformanceAnalysis.dll
+C:\Users\BB\WebAppPerformanceAnalysis\WebAppPerformanceAnalysis\bin\WebAppPerformanceAnalysis.pdb
+C:\Users\BB\WebAppPerformanceAnalysis\WebAppPerformanceAnalysis\obj\Release\ResolveAssemblyReference.cache
+C:\Users\BB\WebAppPerformanceAnalysis\WebAppPerformanceAnalysis\obj\Release\WebAppPerformanceAnalysis.dll
+C:\Users\BB\WebAppPerformanceAnalysis\WebAppPerformanceAnalysis\obj\Release\WebAppPerformanceAnalysis.pdb

@@ -60,13 +60,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\AsyncMediaController.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Controllers\DatabaseController.cs" />
+    <Compile Include="Controllers\DatabaseWorker.cs" />
     <Compile Include="Controllers\EyegazeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoadImageCompletedEventArgs.cs" />
     <Compile Include="Controllers\MediaController.cs" />
+    <Compile Include="Controllers\AsyncWorker.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -74,6 +76,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\WebAppData.mdf" />
+    <Content Include="App_Data\WebAppData_log.ldf">
+      <DependentUpon>WebAppData.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\brazil-1024x768.jpg" />
     <Content Include="Content\chainOfForcedSplitting.png" />
     <Content Include="Content\Cristo_Redentor.jpg" />
@@ -137,10 +143,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-    <Folder Include="Views\AsyncMedia\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Views\Shared\_EyegazeLayout.cshtml" />
   </ItemGroup>
@@ -163,7 +166,7 @@
     <Content Include="Views\Media\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Media\Media.cshtml" />
+    <Content Include="Views\Shared\Media.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Database\Index.cshtml" />
