@@ -7,9 +7,11 @@
 
 @using (Html.BeginForm())
 {
-    @Html.ActionLink("Click here to query database with no multithreading", "QueryDatabase", "Database");
+    @Html.ActionLink("Click here to load images from database with no multithreading", "GetImagesSynchronous", "Database");
                                                                                                    <br />
     
-    @Html.ActionLink("Click here to query database using asynchronous calls", "Database", "Database");
+    @Html.ActionLink("Click here to query database for textual data using asynchronous calls", "GetText", "Database");
+                                                                                                   <br />
+    @Html.ActionLink("Click here to load images from database using asynchronous calls", "GetImages", "Database");
     
 }

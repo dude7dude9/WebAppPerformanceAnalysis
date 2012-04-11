@@ -7,4 +7,36 @@
 
 <h2>Regular Queries</h2>
 
-@* Place queries here... *@
+<ul>
+@foreach (String imgcontent in ViewBag.Images)
+{ 
+    <img alt=" " src=@imgcontent />
+}
+</ul>
+
+@foreach (System.Data.DataTable t in ViewBag.Tables)
+{
+    <h3>@t.TableName</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                @foreach (System.Data.DataColumn col in t.Columns)
+                {
+                    <th>@col.ColumnName</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(System.Data.DataRow row in t.Rows)
+            {
+                <tr>
+                @foreach (var cell in row.ItemArray)
+                {
+                    <td> @cell.ToString() </td>
+                }
+                </tr>
+            }       
+        </tbody>
+    </table>
+    <br />
+}

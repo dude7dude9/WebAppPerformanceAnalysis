@@ -66,7 +66,7 @@ namespace WebAppPerformanceAnalysis.Controllers
 
                     AsyncManager.OutstandingOperations.Increment();
                     AsyncWorker l = new AsyncWorker();
-                    l.LoadImageCompleted += (sender, e) =>
+                    l.LoadDataCompleted += (sender, e) =>
                     {
                         // Place image contents in an array of images in viewbag
                         ViewBag.Images.Add("data:image/jpeg;base64," + @e.ImageContents);
@@ -83,5 +83,5 @@ namespace WebAppPerformanceAnalysis.Controllers
         }
     }
 
-    public delegate void LoadImageCompletedEventHandler(object sender, LoadImageCompletedEventArgs e);
+    public delegate void LoadCompletedEventHandler(object sender, LoadCompletedEventArgs e);
 }

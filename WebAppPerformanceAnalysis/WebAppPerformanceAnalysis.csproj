@@ -64,7 +64,7 @@
     <Compile Include="Controllers\DatabaseWorker.cs" />
     <Compile Include="Controllers\EyegazeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\LoadImageCompletedEventArgs.cs" />
+    <Compile Include="Controllers\LoadCompletedEventArgs.cs" />
     <Compile Include="Controllers\MediaController.cs" />
     <Compile Include="Controllers\AsyncWorker.cs">
       <SubType>Component</SubType>

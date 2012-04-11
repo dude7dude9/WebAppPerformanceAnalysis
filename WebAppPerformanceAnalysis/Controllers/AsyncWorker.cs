@@ -7,12 +7,13 @@ using System.IO;
 using System.Collections;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Data;
 
 namespace WebAppPerformanceAnalysis.Controllers
 {
     public class AsyncWorker : Component
     {
-        public event LoadImageCompletedEventHandler LoadImageCompleted;
+        public event LoadCompletedEventHandler LoadDataCompleted;
 
         private SendOrPostCallback onCompletedDelegate;
 
@@ -34,7 +35,7 @@ namespace WebAppPerformanceAnalysis.Controllers
             fileStream.Read(buffer, 0, (int)fileStream.Length);
             fileStream.Close();
             string base64string = Convert.ToBase64String(buffer);
-            LoadCompleted(new LoadImageCompletedEventArgs(base64string, null, false, null));
+            LoadCompleted(new LoadCompletedEventArgs(base64string, null, false, null));
             return base64string;
         }
 
@@ -45,28 +46,36 @@ namespace WebAppPerformanceAnalysis.Controllers
             byte[] contents = dw.binaryQueryDB(query);
             
             string base64string = Convert.ToBase64String(contents);
-            LoadCompleted(new LoadImageCompletedEventArgs(base64string, null, false, null));
+            LoadCompleted(new LoadCompletedEventArgs(base64string, null, false, null));
             return base64string;
+        }
+
+        public DataTable LoadDBTextAsync(string query)
+        {
+            DatabaseWorker dw = new DatabaseWorker();
+            DataTable t = dw.queryDBRows(query);
+            LoadCompleted(new LoadCompletedEventArgs(t, null, false, null));
+            return t;
         }
 
         private void LoadCompleted(object operationState)
         {
-            LoadImageCompletedEventArgs e = operationState as LoadImageCompletedEventArgs;
+            LoadCompletedEventArgs e = operationState as LoadCompletedEventArgs;
 
-            OnLoadImageCompleted(e);
+            OnLoadCompleted(e);
         }
 
-        protected void OnLoadImageCompleted(LoadImageCompletedEventArgs e)
+        protected void OnLoadCompleted(LoadCompletedEventArgs e)
         {
-            if (LoadImageCompleted != null)
+            if (LoadDataCompleted != null)
             {
-                LoadImageCompleted(this, e);
+                LoadDataCompleted(this, e);
             }
         }
 
         private void CompletionMethod(string file, Exception exception, bool canceled, AsyncOperation asyncOp)
         {
-            LoadImageCompletedEventArgs e = new LoadImageCompletedEventArgs(file, exception, canceled, asyncOp);
+            LoadCompletedEventArgs e = new LoadCompletedEventArgs(file, exception, canceled, asyncOp);
 
             asyncOp.PostOperationCompleted(onCompletedDelegate, e);
         }
