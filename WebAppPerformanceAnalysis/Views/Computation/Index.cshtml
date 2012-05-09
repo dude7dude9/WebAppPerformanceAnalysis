@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "High Computation Tests";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>High Computation Tests</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.ActionLink("Click here to query database for textual data with no multithreading", "GetTextSynchronous", "Database");
+                                                                                            <br />
+    @Html.ActionLink("Click here to load images from database with no multithreading", "GetImagesSynchronous", "Database");
+                                                                                            <br />
+    @Html.ActionLink("Click here to query database for textual data using asynchronous calls", "GetText", "Database");
+                                                                                                   <br />
+    @Html.ActionLink("Click here to load images from database using asynchronous calls", "GetImages", "Database");
+    
+}
