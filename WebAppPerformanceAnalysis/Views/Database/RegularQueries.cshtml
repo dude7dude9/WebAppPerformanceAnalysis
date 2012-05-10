@@ -5,14 +5,12 @@
     
 }
 
-<h2>Regular Queries</h2>
+<h2>Database Queries</h2>
 
-<ul>
 @foreach (String imgcontent in ViewBag.Images)
 { 
-    <img alt=" " src=@imgcontent />
+    <img alt=" " src=@imgcontent width="80" height="60" />
 }
-</ul>
 
 @foreach (System.Data.DataTable t in ViewBag.Tables)
 {
