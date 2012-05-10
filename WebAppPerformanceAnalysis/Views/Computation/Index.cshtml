@@ -4,14 +4,16 @@
 
 <h2>@ViewBag.Title</h2>
 
+@model WebAppPerformanceAnalysis.Models.ChangePasswordModel
+<script type="text/javascript">
+    var activeDates = @Html.Raw(Json.Encode(Model));
+</script>
+
 @using (Html.BeginForm())
 {
-    @Html.ActionLink("Click here to query database for textual data with no multithreading", "GetTextSynchronous", "Database");
+    @Html.ActionLink("Click here to for serial ray tracing", "RayTraceSync", "Computation");
                                                                                             <br />
-    @Html.ActionLink("Click here to load images from database with no multithreading", "GetImagesSynchronous", "Database");
-                                                                                            <br />
-    @Html.ActionLink("Click here to query database for textual data using asynchronous calls", "GetText", "Database");
-                                                                                                   <br />
-    @Html.ActionLink("Click here to load images from database using asynchronous calls", "GetImages", "Database");
-    
+    @Html.ActionLink("Click here to for parallel ray tracing", "RayTraceAsync", "Computation");
 }
+
+

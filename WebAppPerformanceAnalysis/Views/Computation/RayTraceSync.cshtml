@@ -1,0 +1,65 @@
+﻿@model WebAppPerformanceAnalysis.Models.ComputationModels
+
+<h2>@ViewBag.Title</h2>
+
+<canvas id="rayTraceCanvas" width="1300" height="1300"></canvas>
+
+<script type="text/javascript">
+    function setPixel(imageData, x, y, r, g, b, a) {
+        index = (x + y * imageData.width) * 4;
+        imageData.data[index + 0] = r;
+        imageData.data[index + 1] = g;
+        imageData.data[index + 2] = b;
+        imageData.data[index + 3] = a;
+    }
+
+    //Split before Serialization as serializtion throws exception if too long
+     var LocalCP = new Array(10);
+     LocalCP[0] = @Html.Raw(Json.Encode(Model.rgba0));
+     LocalCP[1] = @Html.Raw(Json.Encode(Model.rgba1));
+     LocalCP[2] = @Html.Raw(Json.Encode(Model.rgba2));
+     LocalCP[3] = @Html.Raw(Json.Encode(Model.rgba3));
+     LocalCP[4] = @Html.Raw(Json.Encode(Model.rgba4));
+     LocalCP[5] = @Html.Raw(Json.Encode(Model.rgba5));
+     LocalCP[6] = @Html.Raw(Json.Encode(Model.rgba6));
+     LocalCP[7] = @Html.Raw(Json.Encode(Model.rgba7));
+     LocalCP[8] = @Html.Raw(Json.Encode(Model.rgba8));
+     LocalCP[9] = @Html.Raw(Json.Encode(Model.rgba9));   
+
+
+//    alert(751);
+//    for (z = 0; z < 5; z++) {
+//        alert(LocalCP[0][z]);
+//    }
+
+    element = document.getElementById("rayTraceCanvas");
+    c = element.getContext("2d");
+
+    // read the width and height of the canvas
+    width = element.width;
+    height = element.height;
+
+    // create a new pixel array
+    imageData = c.createImageData(width, height);
+
+    // draw random dots
+    var pos = 0;
+    for(v=0; v<10; v++){
+        for (i = 0; i < LocalCP[v].length; i+=3) {
+            x = pos%width;
+            y = (pos/width) |0;//truncate to int32
+            if(pos%1300 !=0)
+                y += 1;
+            r = LocalCP[v][i];
+            g = LocalCP[v][i+1];
+            b = LocalCP[v][i+2];
+            pos++;
+
+            setPixel(imageData, width-x, height-y, r, g, b, 255); // 255 opaque
+        }
+    }
+
+    // copy the image data back onto the canvas
+    c.putImageData(imageData, 0, 0); // at coords 0,0
+
+</script>

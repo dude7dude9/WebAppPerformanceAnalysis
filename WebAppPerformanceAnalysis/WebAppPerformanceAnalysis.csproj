@@ -61,6 +61,14 @@
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ComputationController.cs" />
+    <Compile Include="Controllers\ComputationLogic\Color.cs" />
+    <Compile Include="Controllers\ComputationLogic\Hit.cs" />
+    <Compile Include="Controllers\ComputationLogic\Light.cs" />
+    <Compile Include="Controllers\ComputationLogic\Plane.cs" />
+    <Compile Include="Controllers\ComputationLogic\RayTracer.cs" />
+    <Compile Include="Controllers\ComputationLogic\SceneObject.cs" />
+    <Compile Include="Controllers\ComputationLogic\Sphere.cs" />
+    <Compile Include="Controllers\ComputationLogic\Vector.cs" />
     <Compile Include="Controllers\DatabaseController.cs" />
     <Compile Include="Controllers\DatabaseWorker.cs" />
     <Compile Include="Controllers\EyegazeController.cs" />
@@ -73,7 +81,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\HtmlExtensions.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\ComputationModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -180,6 +190,13 @@
   <ItemGroup>
     <Content Include="Views\Database\RegularQueries.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Computation\RayTraceSync.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Computation\RayTraceAsync.cshtml" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

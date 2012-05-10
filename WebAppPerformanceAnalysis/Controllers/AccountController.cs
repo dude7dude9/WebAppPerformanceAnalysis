@@ -114,7 +114,14 @@ namespace WebAppPerformanceAnalysis.Controllers
         public ActionResult ChangePassword()
         {
             ViewBag.PasswordLength = MembershipService.MinPasswordLength;
-            return View();
+
+            var cP = new ChangePasswordModel();
+
+            cP.ConfirmPassword = "XYZ";
+            cP.NewPassword = "New";
+            cP.OldPassword = "Old";
+
+            return View(cP);
         }
 
         [Authorize]
