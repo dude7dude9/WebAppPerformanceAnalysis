@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ComputationController.cs" />
     <Compile Include="Controllers\DatabaseController.cs" />
     <Compile Include="Controllers\DatabaseWorker.cs" />
     <Compile Include="Controllers\EyegazeController.cs" />
@@ -143,7 +144,9 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Views\Computation\Index.cshtml" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_EyegazeLayout.cshtml" />
   </ItemGroup>

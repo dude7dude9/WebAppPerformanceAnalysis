@@ -11,6 +11,7 @@ using System.Collections;
 
 using System.Data.Sql;
 using System.Data.SqlClient;
+using System.Data;
 
 namespace WebAppPerformanceAnalysis.Controllers
 {
@@ -52,6 +53,30 @@ namespace WebAppPerformanceAnalysis.Controllers
             return View("Media");
         }
 
+        /// <summary>
+        /// Loads images from database using synchronous method calling.
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult GetTextSynchronous()
+        {
+            DatabaseWorker dw = new DatabaseWorker();
+            DatabaseWorker.connectDB();
+            ViewBag.Tables = new ArrayList();
+            ViewBag.Images = new ArrayList();
+            String[] tableNames = { "Technology", "Music", "Nature", "Health", "Sports", "Business" };
+            for (int j = 0; j < tableNames.Length; j++)
+            {
+                AsyncWorker aw = new AsyncWorker();
+                DataTable table = aw.LoadDBTextAsync("select DocumentTitle as Title, Username, FirstName, LastName from Articles, Groups, SiteUsers where Articles.GroupID=Groups.GroupID and SiteUsers.UserID=Articles.UserID and GroupName = '" + tableNames[j] + "'");
+                table.TableName = tableNames[j] + " Articles:";
+                ViewBag.Tables.Add(table);
+                
+            }
+            DatabaseWorker.disconnectDB();
+            ViewBag.Title = "Synchronous Test Loading Text From Database";
+            return View("RegularQueries");
+        }
+
         public ActionResult GetImagesCompleted()
         {
             ViewBag.Title = "Asynchronous Test Loading Media From Database";
@@ -81,9 +106,6 @@ namespace WebAppPerformanceAnalysis.Controllers
                         // Place image contents in an array of images in viewbag
                         ViewBag.Images.Add("data:image/jpeg;base64," + @e.ImageContents);
 
-                        //Response.Write("<img alt=\"\" src=\"data:image/jpeg;base64," + @e.ImageContents + "\" />");
-                        //Response.Write("<img src=\"../.." + fileName.Substring(fileName.LastIndexOf("/")) + "\" alt=\"\" />");
-                        //Response.Flush();
                         AsyncManager.OutstandingOperations.Decrement();
                     };
 
