@@ -77,10 +77,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\WebAppData.mdf" />
-    <Content Include="App_Data\WebAppData_log.ldf">
-      <DependentUpon>WebAppData.mdf</DependentUpon>
-    </Content>
     <Content Include="Content\brazil-1024x768.jpg" />
     <Content Include="Content\chainOfForcedSplitting.png" />
     <Content Include="Content\Cristo_Redentor.jpg" />
@@ -179,6 +175,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Database\RegularQueries.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

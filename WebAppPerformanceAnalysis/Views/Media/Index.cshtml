@@ -5,9 +5,10 @@
 @using (Html.BeginForm())
 {
     @Html.ActionLink("Click here to load pictures with no multithreading", "LoadMediaSynchronous", "Media");
-                                                                                                   <br />
-    
+    <br />
     @Html.ActionLink("Click here to load pictures using asynchronous calls", "Media", "Media");
+    <br />
+    @Html.ActionLink("Click here to load pictures using cache", "LoadCache", "Media");
     
 }
 
