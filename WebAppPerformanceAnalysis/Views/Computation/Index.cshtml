@@ -11,9 +11,11 @@
 
 @using (Html.BeginForm())
 {
-    @Html.ActionLink("Click here to for serial ray tracing", "RayTraceSync", "Computation");
+    @Html.ActionLink("Click here for serial ray tracing", "RayTraceSync", "Computation");
                                                                                             <br />
-    @Html.ActionLink("Click here to for parallel ray tracing", "RayTraceAsync", "Computation");
+    @Html.ActionLink("Click here for parallel ray tracing", "RayTraceAsync", "Computation");
+                                                                                              <br />
+    @Html.ActionLink("Click here for cached ray tracing", "RayTraceCache", "Computation");
 }
 
 

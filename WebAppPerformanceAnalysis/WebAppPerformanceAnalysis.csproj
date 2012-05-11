@@ -81,7 +81,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helper\HtmlExtensions.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\ComputationModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
