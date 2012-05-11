@@ -87,7 +87,7 @@ namespace WebAppPerformanceAnalysis.Controllers
             {
                 RayTracer rt = new RayTracer();
 
-                pixelArray = rt.RayTraceScene();
+                pixelArray = rt.RayTraceScene(false);
 
                 HttpRuntime.Cache.Insert("RayTraceScene", pixelArray);
                 Debug.WriteLine("Added to cache");
