@@ -27,7 +27,7 @@ namespace WebAppPerformanceAnalysis.Controllers
 
             RayTracer rt = new RayTracer();
 
-            int[][] pixelArray = rt.RayTraceScene();
+            int[][] pixelArray = rt.RayTraceScene(false);
 
             ComputationModels model = new ComputationModels();
 
@@ -51,6 +51,28 @@ namespace WebAppPerformanceAnalysis.Controllers
         public ActionResult RayTraceAsync()
         {
             ViewBag.Title = "Ray Tracing Asynchronous";
+
+            RayTracer rt = new RayTracer();
+
+            int[][] pixelArray = rt.RayTraceScene(true);
+
+            ComputationModels model = new ComputationModels();
+
+            int len = pixelArray.Length;
+
+            model.rgba0 = pixelArray[0];
+            model.rgba1 = pixelArray[1];
+            model.rgba2 = pixelArray[2];
+            model.rgba3 = pixelArray[3];
+            model.rgba4 = pixelArray[4];
+            model.rgba5 = pixelArray[5];
+            model.rgba6 = pixelArray[6];
+            model.rgba7 = pixelArray[7];
+            model.rgba8 = pixelArray[8];
+            model.rgba9 = pixelArray[9];
+
+            return View("RayTraceSync", model);
+
             return View();
         }
     }

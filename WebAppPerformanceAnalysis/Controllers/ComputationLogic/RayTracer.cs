@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Diagnostics;
+using System.Threading;
 
 namespace WebAppPerformanceAnalysis.Controllers.ComputationLogic
 {
@@ -10,6 +11,12 @@ namespace WebAppPerformanceAnalysis.Controllers.ComputationLogic
     {
         const int windowWidth = 1300;
         const int windowHeight = 1300;
+
+        int workWidth;
+        int workHeight;
+        private static ManualResetEvent[] resetEvents;
+        private const int NumThreads = 4;
+        bool parallel;
 
         // objects
         const int numObjects = 2;
@@ -143,41 +150,89 @@ namespace WebAppPerformanceAnalysis.Controllers.ComputationLogic
         }
 
 
-        public int[][] RayTraceScene()
+        public int[][] RayTraceScene(bool parallel)
         {
-            int modelCount = -1;
-            int len = (windowWidth*windowHeight*3)/10;
+            this.parallel = parallel;
+            if (parallel)
+            {
+                workHeight = windowHeight / 4;
+                workWidth = windowWidth / 4;
 
-	        for(int r=0; r<windowHeight; r++) {
-		        for(int c=0; c<windowWidth; c++) {
-			        // construct ray through (c, r) using u,v,n and H,W
+                resetEvents = new ManualResetEvent[NumThreads];
+                for (int t = 0; t < NumThreads; t++)
+                {
+                    resetEvents[t] = new ManualResetEvent(false);
+                    ThreadPool.QueueUserWorkItem(new WaitCallback(DoWork), (object)t);
+                }
 
-			        Vector d = new Vector(0, 0, 0);
+                WaitHandle.WaitAll(resetEvents);
+            }
+            else
+            {
+                workHeight = windowHeight;
+                workWidth = windowWidth;
 
-			        //d = pixelPos - eye
-			        //d = -Nn +W(2c/ncols -1)u +H(2r/nrows -1)v
-			        d = (n*(-N) + 
-				        u*(W*((2*(float)c/windowWidth)-1)) + 
-				        v*(H*((2*(float)r/windowHeight)-1)) );
+                RayTracingLoop(0, 0);
+            }
+            
+            return pixelArray;
+        }
 
-			        // intersect ray with scene objects
-			        Hit hit = intersect(eye, d);
-	
-			        // shade pixel accordingly
-			        Color color = shade(hit);
+        private void RayTracingLoop(int R, int C){
+            bool start = true;
+            int increaseCount = 0;
 
-			        // add a pointless purple haze to objects in the distance
-			        float hazeDistance = 8.0f;
-			        if (hit.scObject != null && hit.t > hazeDistance) {
-				        float logDist = Convert.ToSingle( Math.Log((hit.t - hazeDistance)+1) );
-				        if (logDist > 20)
-					        logDist = 20;
-				        color = color + (new Color(0.05f, 0.01f, 0.05f)) * logDist;
-			        }
+            int len = (windowWidth * windowHeight * 3) / 10;
 
-                    if (((r*windowWidth*3) + c) % len == 0)
+            int modelCount = ((R * windowWidth * 3) + C)/ len;
+            
+            if ((modelCount == 0)||(modelCount==5))
+            {
+                modelCount--;
+            }
+            Debug.WriteLine(modelCount, "Model Number BEFORE");
+
+            for (int r=R; r < R + workWidth; r++)
+            {
+                for (int c=0; c < windowWidth; c++)
+                {
+                    //if (start)
+                    //{
+                    //    r = R;
+                    //    c = C;
+                    //    start = false;
+                    //}
+                    // construct ray through (c, r) using u,v,n and H,W
+
+                    Vector d = new Vector(0, 0, 0);
+
+                    //d = pixelPos - eye
+                    //d = -Nn +W(2c/ncols -1)u +H(2r/nrows -1)v
+                    d = (n * (-N) +
+                        u * (W * ((2 * (float)c / windowWidth) - 1)) +
+                        v * (H * ((2 * (float)r / windowHeight) - 1)));
+
+                    // intersect ray with scene objects
+                    Hit hit = intersect(eye, d);
+
+                    // shade pixel accordingly
+                    Color color = shade(hit);
+
+                    // add a pointless purple haze to objects in the distance
+                    float hazeDistance = 8.0f;
+                    if (hit.scObject != null && hit.t > hazeDistance)
+                    {
+                        float logDist = Convert.ToSingle(Math.Log((hit.t - hazeDistance) + 1));
+                        if (logDist > 20)
+                            logDist = 20;
+                        color = color + (new Color(0.05f, 0.01f, 0.05f)) * logDist;
+                    }
+
+                    if (((r * windowWidth * 3) + c) % len == 0)
                     {
                         modelCount++;
+                        Debug.WriteLine(Thread.CurrentThread.ManagedThreadId.ToString(), "Thread ID");
+                        Debug.WriteLine(modelCount, "Model Number INCREASED TO");                        
                     }
 
                     try
@@ -185,19 +240,32 @@ namespace WebAppPerformanceAnalysis.Controllers.ComputationLogic
                         pixelArray[modelCount][((r * windowWidth) * 3) + (c * 3) + 0 - modelCount * len] = AddColor(color.r);    //Red
                         pixelArray[modelCount][((r * windowWidth) * 3) + (c * 3) + 1 - modelCount * len] = AddColor(color.g);    //Green
                         pixelArray[modelCount][((r * windowWidth) * 3) + (c * 3) + 2 - modelCount * len] = AddColor(color.b);    //Blue
+
+                        increaseCount++;
+                        if ((increaseCount == (len*2.5)) && (parallel))
+                        {
+                            return;
+                        }
                     }
                     catch (IndexOutOfRangeException rangeEx)
                     {
                         Debug.WriteLine(((r * windowWidth) * 3) + (c * 3) + 0 - modelCount * len, "Position 1");
                         Debug.WriteLine(modelCount, "ModelCount");
+                        Debug.WriteLine(rangeEx.StackTrace, "STACK TRACE");
                     }
-		        }
-	        }
-            return pixelArray;
+                }
+            }
         }
 
         int AddColor(float color){
             return Convert.ToInt16(color * 255);
+        }
+
+        private void DoWork(object num)
+        {
+            RayTracingLoop(workHeight*(int)num, workWidth*(int)num); 
+
+            resetEvents[(int)num].Set();
         }
     }
 }
