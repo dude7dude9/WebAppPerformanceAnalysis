@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using WebAppPerformanceAnalysis.Controllers.ComputationLogic;
 using WebAppPerformanceAnalysis.Models;
 using System.Web.Script.Serialization;
+using System.Diagnostics;
 
 namespace WebAppPerformanceAnalysis.Controllers
 {
@@ -74,6 +75,46 @@ namespace WebAppPerformanceAnalysis.Controllers
             return View("RayTraceSync", model);
 
             return View();
+        }
+
+        //[OutputCache (Duration=60)]
+        public ActionResult RayTraceCache()
+        {
+            ViewBag.Title = "Ray Tracing with Caching";
+            int[][] cachedPixelArray = (int[][])HttpRuntime.Cache.Get("RayTraceScene");
+            int[][] pixelArray;
+            if (cachedPixelArray == null)
+            {
+                RayTracer rt = new RayTracer();
+
+                pixelArray = rt.RayTraceScene();
+
+                HttpRuntime.Cache.Insert("RayTraceScene", pixelArray);
+                Debug.WriteLine("Added to cache");
+            }
+            else
+            {
+                pixelArray = cachedPixelArray;
+                Debug.WriteLine("Taken from cache");
+            }
+
+            ComputationModels model = new ComputationModels();
+
+            int len = pixelArray.Length;
+
+            model.rgba0 = pixelArray[0];
+            model.rgba1 = pixelArray[1];
+            model.rgba2 = pixelArray[2];
+            model.rgba3 = pixelArray[3];
+            model.rgba4 = pixelArray[4];
+            model.rgba5 = pixelArray[5];
+            model.rgba6 = pixelArray[6];
+            model.rgba7 = pixelArray[7];
+            model.rgba8 = pixelArray[8];
+            model.rgba9 = pixelArray[9];
+
+            return View("RayTraceSync", model);
+            //return RayTraceSync.View(model);
         }
     }
 }

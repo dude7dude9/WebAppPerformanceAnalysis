@@ -175,6 +175,7 @@ namespace WebAppPerformanceAnalysis.Controllers
                     if (cached == null)
                     {
                         contents = dw.binaryQueryDB("select image from Images where imageID = " + i + " and exists (select * from ArticleAttachments where ImageID = " + i + ")");
+                        HttpRuntime.Cache.Insert("DB.Images." + i, contents, null, System.Web.Caching.Cache.NoAbsoluteExpiration, new TimeSpan(0, 1, 0));
                     }
                     else
                     {
@@ -211,7 +212,7 @@ namespace WebAppPerformanceAnalysis.Controllers
                     "where Articles.GroupID=Groups.GroupID and SiteUsers.UserID=Articles.UserID and GroupName = '"+tableNames[j]+"'" +
                     " order by FirstName, LastName ASC");
                     table.TableName = tableNames[j] + " Articles:";
-                    HttpRuntime.Cache.Insert(tableNames[j], table);
+                    HttpRuntime.Cache.Insert(tableNames[j], table, null, System.Web.Caching.Cache.NoAbsoluteExpiration, new TimeSpan(0, 1, 0));
                 }
                 else
                 {

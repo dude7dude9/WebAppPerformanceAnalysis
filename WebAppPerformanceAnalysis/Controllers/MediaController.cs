@@ -100,7 +100,7 @@ namespace WebAppPerformanceAnalysis.Controllers
                     if (contents == null)
                     {
                         contents = l.LoadImageAsync((string)fileName);
-                        HttpRuntime.Cache.Insert(fileName, contents);
+                        HttpRuntime.Cache.Insert(fileName, contents, null, System.Web.Caching.Cache.NoAbsoluteExpiration, new TimeSpan(0, 1, 0));
                     }
                     // Place image contents in an array of images in viewbag
                     ViewBag.Images.Add("data:image/jpeg;base64," + contents);
