@@ -179,7 +179,6 @@ namespace WebAppPerformanceAnalysis.Controllers.ComputationLogic
         }
 
         private void RayTracingLoop(int R, int C){
-            bool start = true;
             int increaseCount = 0;
 
             int len = (windowWidth * windowHeight * 3) / 10;
@@ -196,13 +195,7 @@ namespace WebAppPerformanceAnalysis.Controllers.ComputationLogic
             {
                 for (int c=0; c < windowWidth; c++)
                 {
-                    //if (start)
-                    //{
-                    //    r = R;
-                    //    c = C;
-                    //    start = false;
-                    //}
-                    // construct ray through (c, r) using u,v,n and H,W
+                    // construct ray through (c, r) using axis u,v,n and window constraints H,W
 
                     Vector d = new Vector(0, 0, 0);
 
@@ -230,9 +223,7 @@ namespace WebAppPerformanceAnalysis.Controllers.ComputationLogic
 
                     if (((r * windowWidth * 3) + c) % len == 0)
                     {
-                        modelCount++;
-                        Debug.WriteLine(Thread.CurrentThread.ManagedThreadId.ToString(), "Thread ID");
-                        Debug.WriteLine(modelCount, "Model Number INCREASED TO");                        
+                        modelCount++;                
                     }
 
                     try
