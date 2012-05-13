@@ -17,6 +17,7 @@ namespace WebAppPerformanceAnalysis.Controllers.ComputationLogic
         private static ManualResetEvent[] resetEvents;
         private const int NumThreads = 4;
         bool parallel;
+        bool caching;
 
         // objects
         const int numObjects = 2;
@@ -150,9 +151,10 @@ namespace WebAppPerformanceAnalysis.Controllers.ComputationLogic
         }
 
 
-        public int[][] RayTraceScene(bool parallel)
+        public int[][] RayTraceScene(bool parallel, bool caching)
         {
             this.parallel = parallel;
+            this.caching = caching;
             if (parallel)
             {
                 workHeight = windowHeight / 4;
@@ -183,14 +185,13 @@ namespace WebAppPerformanceAnalysis.Controllers.ComputationLogic
 
             int len = (windowWidth * windowHeight * 3) / 10;
 
-                    if (((r*windowWidth*3) + c) % len == 0)
             int modelCount = ((R * windowWidth * 3) + C)/ len;
             
             if ((modelCount == 0)||(modelCount==5))
             {
                 modelCount--;
             }
-            Debug.WriteLine(modelCount, "Model Number BEFORE");
+            //Debug.WriteLine(modelCount, "Model Number BEFORE");
 
             for (int r=R; r < R + workWidth; r++)
             {
@@ -216,11 +217,29 @@ namespace WebAppPerformanceAnalysis.Controllers.ComputationLogic
                     float hazeDistance = 8.0f;
                     if (hit.scObject != null && hit.t > hazeDistance)
                     {
-                        modelCount++;
-                        float logDist = Convert.ToSingle(Math.Log((hit.t - hazeDistance) + 1));
-                        if (logDist > 20)
-                            logDist = 20;
-                        color = color + (new Color(0.05f, 0.01f, 0.05f)) * logDist;
+                        float logDist;
+                        if (this.caching)
+                        {
+                            if (HttpRuntime.Cache.Get("colorForHitT" + hit.t.ToString()) != null)
+                            {
+                                color = (Color)HttpRuntime.Cache.Get("colorForHitT" + hit.t.ToString());
+                            }
+                            else
+                            {
+                                logDist = Convert.ToSingle(Math.Log((hit.t - hazeDistance) + 1));
+                                if (logDist > 20)
+                                    logDist = 20;
+                                color = color + (new Color(0.05f, 0.01f, 0.05f)) * logDist;
+                                HttpRuntime.Cache.Insert("colorForHitT" + hit.t.ToString(), color);
+                            }
+                        }
+                        else
+                        {
+                            logDist = Convert.ToSingle(Math.Log((hit.t - hazeDistance) + 1));
+                            if (logDist > 20)
+                                logDist = 20;
+                            color = color + (new Color(0.05f, 0.01f, 0.05f)) * logDist;
+                        }
                     }
 
                     if (((r * windowWidth * 3) + c) % len == 0)
@@ -246,9 +265,6 @@ namespace WebAppPerformanceAnalysis.Controllers.ComputationLogic
                         Debug.WriteLine(modelCount, "ModelCount");
                         Debug.WriteLine(rangeEx.StackTrace, "STACK TRACE");
                     }
-		        }
-	        }
-            return pixelArray;
                 }
             }
         }

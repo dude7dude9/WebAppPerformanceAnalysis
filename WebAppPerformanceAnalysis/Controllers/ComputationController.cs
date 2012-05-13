@@ -28,7 +28,7 @@ namespace WebAppPerformanceAnalysis.Controllers
 
             RayTracer rt = new RayTracer();
 
-            int[][] pixelArray = rt.RayTraceScene(false);
+            int[][] pixelArray = rt.RayTraceScene(false, false);
 
             ComputationModels model = new ComputationModels();
 
@@ -55,7 +55,7 @@ namespace WebAppPerformanceAnalysis.Controllers
 
             RayTracer rt = new RayTracer();
 
-            int[][] pixelArray = rt.RayTraceScene(true);
+            int[][] pixelArray = rt.RayTraceScene(true, false);
 
             ComputationModels model = new ComputationModels();
 
@@ -73,8 +73,6 @@ namespace WebAppPerformanceAnalysis.Controllers
             model.rgba9 = pixelArray[9];
 
             return View("RayTraceSync", model);
-
-            return View();
         }
 
         //[OutputCache (Duration=60)]
@@ -87,7 +85,7 @@ namespace WebAppPerformanceAnalysis.Controllers
             {
                 RayTracer rt = new RayTracer();
 
-                pixelArray = rt.RayTraceScene(false);
+                pixelArray = rt.RayTraceScene(false, true);
 
                 HttpRuntime.Cache.Insert("RayTraceScene", pixelArray);
                 Debug.WriteLine("Added to cache");
