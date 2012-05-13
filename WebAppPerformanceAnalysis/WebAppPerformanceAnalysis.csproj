@@ -86,9 +86,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\WebAppData.mdf" />
-    <Content Include="App_Data\WebAppData_log.ldf">
-      <DependentUpon>WebAppData.mdf</DependentUpon>
+    <Content Include="App_Data\ASPNETDB.MDF" />
+    <Content Include="App_Data\aspnetdb_log.ldf">
+      <DependentUpon>ASPNETDB.MDF</DependentUpon>
     </Content>
     <Content Include="Content\brazil-1024x768.jpg" />
     <Content Include="Content\chainOfForcedSplitting.png" />

@@ -169,10 +169,20 @@ namespace WebAppPerformanceAnalysis.Controllers.ComputationLogic
 			        // add a pointless purple haze to objects in the distance
 			        float hazeDistance = 8.0f;
 			        if (hit.scObject != null && hit.t > hazeDistance) {
-				        float logDist = Convert.ToSingle( Math.Log((hit.t - hazeDistance)+1) );
-				        if (logDist > 20)
-					        logDist = 20;
-				        color = color + (new Color(0.05f, 0.01f, 0.05f)) * logDist;
+                        float logDist;
+                        if (HttpRuntime.Cache.Get("colorForHitT" + hit.t.ToString()) != null)
+                        {
+                            color = (Color)HttpRuntime.Cache.Get("colorForHitT" + hit.t.ToString());
+                        }
+                        else
+                        {
+                            logDist = Convert.ToSingle(Math.Log((hit.t - hazeDistance) + 1));
+                            if (logDist > 20)
+                                logDist = 20;
+                            color = color + (new Color(0.05f, 0.01f, 0.05f)) * logDist;
+                            HttpRuntime.Cache.Insert("colorForHitT" + hit.t.ToString(), color);
+                        }
+				        
 			        }
 
                     if (((r*windowWidth*3) + c) % len == 0)
