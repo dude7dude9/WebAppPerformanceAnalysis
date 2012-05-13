@@ -157,7 +157,7 @@ namespace WebAppPerformanceAnalysis.Controllers
             DatabaseWorker.disconnectDB();
         }
 
-        [OutputCache(Duration = 60, VaryByParam = "none")]
+        
         public ActionResult GetMediaCache()
         {
             DatabaseWorker dw = new DatabaseWorker();

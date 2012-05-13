@@ -17,10 +17,7 @@ namespace WebAppPerformanceAnalysis.Controllers
         public static void connectDB()
         {
             conn = new SqlConnection();
-            System.Reflection.Assembly a = System.Reflection.Assembly.GetExecutingAssembly();
-            DirectoryInfo d = Directory.GetParent(Directory.GetParent(a.CodeBase.ToString().Substring(8)).ToString());
-            String dbfile = d.ToString() + @"\App_Data\ASPNETDB.MDF";
-            conn.ConnectionString = @"Data Source=.\SQLEXPRESS;AttachDbFilename=" + dbfile + ";Integrated Security=True;User Instance=True;MultipleActiveResultSets=True";
+            conn.ConnectionString = @"Data Source=.\SQLEXPRESS;AttachDbFilename=|DataDirectory|\ASPNETDB.MDF;Integrated Security=True;User Instance=True;MultipleActiveResultSets=True";
 
             conn.Open();
         }

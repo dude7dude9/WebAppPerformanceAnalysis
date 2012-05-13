@@ -183,6 +183,7 @@ namespace WebAppPerformanceAnalysis.Controllers.ComputationLogic
 
             int len = (windowWidth * windowHeight * 3) / 10;
 
+                    if (((r*windowWidth*3) + c) % len == 0)
             int modelCount = ((R * windowWidth * 3) + C)/ len;
             
             if ((modelCount == 0)||(modelCount==5))
@@ -215,6 +216,7 @@ namespace WebAppPerformanceAnalysis.Controllers.ComputationLogic
                     float hazeDistance = 8.0f;
                     if (hit.scObject != null && hit.t > hazeDistance)
                     {
+                        modelCount++;
                         float logDist = Convert.ToSingle(Math.Log((hit.t - hazeDistance) + 1));
                         if (logDist > 20)
                             logDist = 20;
@@ -244,6 +246,9 @@ namespace WebAppPerformanceAnalysis.Controllers.ComputationLogic
                         Debug.WriteLine(modelCount, "ModelCount");
                         Debug.WriteLine(rangeEx.StackTrace, "STACK TRACE");
                     }
+		        }
+	        }
+            return pixelArray;
                 }
             }
         }
