@@ -43,6 +43,8 @@ namespace WebAppPerformanceAnalysis.Controllers.ComputationLogic
 
         public RayTracer()
         {
+            //Scene object and light intialization
+
             for(int i=0; i<pixelArray.Length; i++){
                 pixelArray[i] = new int[(windowHeight * windowWidth * 3) / 10];
             }
@@ -160,6 +162,7 @@ namespace WebAppPerformanceAnalysis.Controllers.ComputationLogic
                 workHeight = windowHeight / 4;
                 workWidth = windowWidth / 4;
 
+                //Begin threads performing work
                 resetEvents = new ManualResetEvent[NumThreads];
                 for (int t = 0; t < NumThreads; t++)
                 {
@@ -167,6 +170,7 @@ namespace WebAppPerformanceAnalysis.Controllers.ComputationLogic
                     ThreadPool.QueueUserWorkItem(new WaitCallback(DoWork), (object)t);
                 }
 
+                //Wait for the threads to all finish
                 WaitHandle.WaitAll(resetEvents);
             }
             else
@@ -191,14 +195,13 @@ namespace WebAppPerformanceAnalysis.Controllers.ComputationLogic
             {
                 modelCount--;
             }
-            //Debug.WriteLine(modelCount, "Model Number BEFORE");
-
+            
+            //Begin loop at correct Row and Column so that different threads calculate different areas
             for (int r=R; r < R + workWidth; r++)
             {
                 for (int c=0; c < windowWidth; c++)
                 {
                     // construct ray through (c, r) using axis u,v,n and window constraints H,W
-
                     Vector d = new Vector(0, 0, 0);
 
                     //d = pixelPos - eye
@@ -213,13 +216,14 @@ namespace WebAppPerformanceAnalysis.Controllers.ComputationLogic
                     // shade pixel accordingly
                     Color color = shade(hit);
 
-                    // add a pointless purple haze to objects in the distance
+                    // add a purple haze to objects in the distance
                     float hazeDistance = 8.0f;
                     if (hit.scObject != null && hit.t > hazeDistance)
                     {
                         float logDist;
                         if (this.caching)
                         {
+                            // Caching for haze intensity depending upon distance from the camera
                             if (HttpRuntime.Cache.Get("colorForHitT" + hit.t.ToString()) != null)
                             {
                                 color = (Color)HttpRuntime.Cache.Get("colorForHitT" + hit.t.ToString());
@@ -249,6 +253,7 @@ namespace WebAppPerformanceAnalysis.Controllers.ComputationLogic
 
                     try
                     {
+                        //Store double array of RGB values
                         pixelArray[modelCount][((r * windowWidth) * 3) + (c * 3) + 0 - modelCount * len] = AddColor(color.r);    //Red
                         pixelArray[modelCount][((r * windowWidth) * 3) + (c * 3) + 1 - modelCount * len] = AddColor(color.g);    //Green
                         pixelArray[modelCount][((r * windowWidth) * 3) + (c * 3) + 2 - modelCount * len] = AddColor(color.b);    //Blue
@@ -276,7 +281,8 @@ namespace WebAppPerformanceAnalysis.Controllers.ComputationLogic
         private void DoWork(object num)
         {
             RayTracingLoop(workHeight*(int)num, workWidth*(int)num); 
-
+            
+            //Event handler notifications for when thread completed
             resetEvents[(int)num].Set();
         }
     }
