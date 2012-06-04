@@ -14,8 +14,9 @@
         media loading, database intensive and highly computational operations. Examples
         of each implementation of each operation can be found under the "Media", "Database"
         and "Computation" tabs at the top of the website. Each of the pages linked in the
-        tab was tested independently. Multi-threading was investigated in the form of asynchronous
-        request processing and was compared to the results of caching.</p>
+        tab was tested independently. Multi-threading of the media and database pages was investigated 
+        in the form of asynchronous request processing and the computational multi-threading utilized a
+        thread pool to allocate threads. The results of multi-threading was compared to the performance results of caching.</p>
     <p>
         Various metrics were gathered using different testing tools such as &quot;Page Speed
         Test&quot;, a Google Chrome extension for single-user testing and StresStimulus 
