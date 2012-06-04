@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Web Application Performance Analysis Project Overview</title>
+</head>
+<body>
+    <h1>
+        Web Application Performance Analysis Project Overview</h1>
+    <p>
+        The main goal of the project was to investigate the key sources of inefficiency
+        in web applications and the ways in which these can be mitigated. It is important
+        to minimise these inefficiencies in order to provide satisfactory user experience
+        while using web applications. The web operations that were investigated include
+        media loading, database intensive and highly computational operations. Examples
+        of each implementation of each operation can be found under the "Media", "Database"
+        and "Computation" tabs at the top of the website. Each of the pages linked in the
+        tab was tested independently. Multi-threading was investigated in the form of asynchronous
+        request processing and was compared to the results of caching.</p>
+    <p>
+        Various metrics were gathered using different testing tools such as &quot;Page Speed
+        Test&quot;, a Google Chrome extension for single-user testing and StresStimulus 
+        for load testing. The results showed that
+        caching was more effective than multi-threading for most operations, although multi-threading
+        did have an overall positive effect on performance. The complexity of multi-threading
+        operations should be considered against the performance benefits of concurrency.
+        The key sources of inefficiency were identified as those that required large amounts
+        of data to be processed or returned such as image rendering. These techniques are
+        recommended to be implemented in web applications involving time critical tasks
+        where delays in page loads cannot be afforded.
+    </p>
+    <p>
+        The implementation can be found <a href="implementation.zip">here</a>.
+    </p>
+</body>
+</html>
