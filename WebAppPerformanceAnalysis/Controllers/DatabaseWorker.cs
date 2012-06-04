@@ -10,6 +10,9 @@ using System.Data;
 
 namespace WebAppPerformanceAnalysis.Controllers
 {
+    /// <summary>
+    /// Used for communication with the SQL Server Express database - ASPNETDB.MDF must exist in the App_Data directory of the project.
+    /// </summary>
     public class DatabaseWorker
     {
         private static SqlConnection conn;
@@ -18,7 +21,6 @@ namespace WebAppPerformanceAnalysis.Controllers
         {
             conn = new SqlConnection();
             conn.ConnectionString = @"Data Source=.\SQLEXPRESS;AttachDbFilename=|DataDirectory|\ASPNETDB.MDF;Integrated Security=True;User Instance=True;MultipleActiveResultSets=True";
-
             conn.Open();
         }
 
@@ -27,6 +29,11 @@ namespace WebAppPerformanceAnalysis.Controllers
             conn.Close();
         }
 
+        /// <summary>
+        /// Queries the database for numerical data.
+        /// </summary>
+        /// <param name="query">SQL query</param>
+        /// <returns>Integer value</returns>
         public int intQueryDB(string query)
         {
             SqlCommand cmd = conn.CreateCommand();
@@ -41,14 +48,19 @@ namespace WebAppPerformanceAnalysis.Controllers
                     int id = Int32.Parse(result.ToString());
                     return id;
                 }
-                return 0;
+                return -1;
             }
             catch (SqlException ex)
             {
-                return 0;
+                return -1;
             }
         }
 
+        /// <summary>
+        /// Queries the database for binary data.
+        /// </summary>
+        /// <param name="query">SQL query</param>
+        /// <returns>Binary data</returns>
         public byte[] binaryQueryDB(string query)
         {
             SqlCommand cmd = conn.CreateCommand();
@@ -70,6 +82,11 @@ namespace WebAppPerformanceAnalysis.Controllers
             }
         }
 
+        /// <summary>
+        /// Queries the database for multiple rows/columns of data.
+        /// </summary>
+        /// <param name="query">SQL query</param>
+        /// <returns>Rows of data</returns>
         public DataTable queryDBRows(string query)
         {
             SqlCommand cmd = conn.CreateCommand();

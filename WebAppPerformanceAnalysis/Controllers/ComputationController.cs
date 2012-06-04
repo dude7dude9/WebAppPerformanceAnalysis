@@ -75,7 +75,11 @@ namespace WebAppPerformanceAnalysis.Controllers
             return View("RayTraceSync", model);
         }
 
-        //[OutputCache (Duration=60)]
+        /// <summary>
+        /// Implementation of ray tracer using caching - caches the entire pixel array to be used for subsequent 
+        /// identical requests to the server and caches the colour intensities for each pixel.
+        /// </summary>
+        /// <returns>View of ray trace scene</returns>
         public ActionResult RayTraceCache()
         {
             ViewBag.Title = "Ray Tracing with Caching";
@@ -112,7 +116,6 @@ namespace WebAppPerformanceAnalysis.Controllers
             model.rgba9 = pixelArray[9];
 
             return View("RayTraceSync", model);
-            //return RayTraceSync.View(model);
         }
     }
 }

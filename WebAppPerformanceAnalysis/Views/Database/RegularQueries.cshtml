@@ -7,11 +7,13 @@
 
 <h2>Database Queries</h2>
 
+@* display images (if any) *@
 @foreach (String imgcontent in ViewBag.Images)
 { 
     <img alt=" " src=@imgcontent width="80" height="60" />
 }
 
+@* display tables (if any) *@
 @foreach (System.Data.DataTable t in ViewBag.Tables)
 {
     <h3>@t.TableName</h3>

@@ -6,6 +6,9 @@ using System.Web.Mvc;
 
 namespace WebAppPerformanceAnalysis.Controllers
 {
+    /// <summary>
+    /// Can be ignored for SOFTENG751 project.
+    /// </summary>
     public class EyegazeController : Controller
     {
         //

@@ -10,7 +10,9 @@ using System.Web.Security;
 
 namespace WebAppPerformanceAnalysis.Models
 {
-
+    /// <summary>
+    /// Auto-generated account model classes
+    /// </summary>
     #region Models
 
     public class ChangePasswordModel

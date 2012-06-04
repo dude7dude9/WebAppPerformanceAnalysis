@@ -15,11 +15,12 @@ using System.Data;
 
 namespace WebAppPerformanceAnalysis.Controllers
 {
+    /// <summary>
+    /// Handles both asynchronous and synchronous requests from the client.
+    /// </summary>
     public class DatabaseController : AsyncController
     {
 
-        //
-        // GET: /Database/
         public ActionResult Index()
         {
             ViewBag.Title = "Database Tests";
@@ -27,9 +28,9 @@ namespace WebAppPerformanceAnalysis.Controllers
         }
 
         /// <summary>
-        /// Loads images from database using synchronous method calling.
+        /// Loads images from database synchronously.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>View of images</returns>
         public ActionResult GetImagesSynchronous()
         {
             DatabaseWorker dw = new DatabaseWorker();
@@ -55,9 +56,9 @@ namespace WebAppPerformanceAnalysis.Controllers
         }
 
         /// <summary>
-        /// Loads images from database using synchronous method calling.
+        /// Loads images from database synchronously.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>View of textual tables</returns>
         public ActionResult GetTextSynchronous()
         {
             DatabaseWorker dw = new DatabaseWorker();
@@ -80,6 +81,10 @@ namespace WebAppPerformanceAnalysis.Controllers
             return View("RegularQueries");
         }
 
+        /// <summary>
+        /// Callback method for GetImagesAsync().
+        /// </summary>
+        /// <returns>View of images</returns>
         public ActionResult GetImagesCompleted()
         {
             ViewBag.Title = "Asynchronous Test Loading Media From Database";
@@ -87,7 +92,7 @@ namespace WebAppPerformanceAnalysis.Controllers
         }
 
         /// <summary>
-        /// Loads images from database using asynchronous method calling.
+        /// Loads images from database using asynchronous request processing.
         /// </summary>
         public void GetImagesAsync()
         {
@@ -105,6 +110,7 @@ namespace WebAppPerformanceAnalysis.Controllers
                 {
                     AsyncManager.OutstandingOperations.Increment();
                     AsyncWorker l = new AsyncWorker();
+                    // Register the event handler to be notified when the async operation finishes
                     l.LoadDataCompleted += (sender, e) =>
                     {
                         // Place image contents in an array of images in viewbag
@@ -113,6 +119,7 @@ namespace WebAppPerformanceAnalysis.Controllers
                         AsyncManager.OutstandingOperations.Decrement();
                     };
 
+                    // Execute async method (automatically on separate thread)
                     l.LoadDBImageAsync("select image from Images where imageID = " + i + " and exists (select * from ArticleAttachments where ImageID = " + i + ")");
                                         
                 }
@@ -120,7 +127,10 @@ namespace WebAppPerformanceAnalysis.Controllers
             DatabaseWorker.disconnectDB();
         }
 
-
+        /// <summary>
+        /// Callback method for GetTextAsync().
+        /// </summary>
+        /// <returns>View of textual data in tabular form</returns>
         public ActionResult GetTextCompleted()
         {
             ViewBag.Title = "Asynchronous Test Loading Text From Database";
@@ -157,7 +167,11 @@ namespace WebAppPerformanceAnalysis.Controllers
             DatabaseWorker.disconnectDB();
         }
 
-        
+        /// <summary>
+        /// Processes request for media from database using caching.
+        /// </summary>
+        /// <returns>View of media from database</returns>
+        [OutputCache(Duration = 60, VaryByParam = "none")]
         public ActionResult GetMediaCache()
         {
             DatabaseWorker dw = new DatabaseWorker();
@@ -182,7 +196,6 @@ namespace WebAppPerformanceAnalysis.Controllers
                         contents = (byte[])cached;
                     }
 
-                    // Place image contents in an array of images in viewbag
                     ViewBag.Images.Add("data:image/jpeg;base64," + Convert.ToBase64String(contents));
 
                 }
@@ -193,6 +206,10 @@ namespace WebAppPerformanceAnalysis.Controllers
             return View("RegularQueries");
         }
 
+        /// <summary>
+        /// Processes request for text from database using caching.
+        /// </summary>
+        /// <returns>View of textual data in tabular form</returns>
         [OutputCache(Duration = 60, VaryByParam = "none")]
         public ActionResult GetTextCache()
         {

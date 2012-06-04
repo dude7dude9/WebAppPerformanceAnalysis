@@ -178,22 +178,13 @@
     <Content Include="Views\Media\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\Media.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Database\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\Blank.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Database\RegularQueries.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Computation\RayTraceSync.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Computation\RayTraceAsync.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

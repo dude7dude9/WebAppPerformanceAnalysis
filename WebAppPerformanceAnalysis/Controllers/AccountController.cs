@@ -11,6 +11,9 @@ using WebAppPerformanceAnalysis.Models;
 
 namespace WebAppPerformanceAnalysis.Controllers
 {
+    /// <summary>
+    /// Auto-generated class from MVC application template.
+    /// </summary>
     public class AccountController : Controller
     {
 
